@@ -1,0 +1,89 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    html {
+        font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+        background-color: #FAFAF7;
+        color: #2C2C2A;
+    }
+    body {
+        line-height: 1.7;
+    }
+    h1, h2, h3, h4, h5, h6 {
+        font-weight: 600;
+        color: #2C2C2A;
+    }
+}
+
+@layer components {
+    .btn-primary {
+        @apply inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-primary text-white font-medium hover:bg-primary-dark transition-colors disabled:opacity-50 disabled:cursor-not-allowed;
+    }
+    .btn-secondary {
+        @apply inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-transparent border border-primary text-primary font-medium hover:bg-primary-light transition-colors;
+    }
+    .btn-danger {
+        @apply inline-flex items-center justify-center gap-2 px-4 py-2 rounded-xl bg-danger text-white font-medium hover:opacity-90 transition;
+    }
+    .card {
+        @apply bg-surface border border-bordered rounded-2xl p-6 shadow-soft;
+    }
+    .card-white {
+        @apply bg-white border border-bordered rounded-2xl p-6 shadow-soft;
+    }
+    .input {
+        @apply w-full px-4 py-2.5 bg-white border border-bordered rounded-xl text-ink focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition;
+    }
+    .label {
+        @apply block text-sm font-medium text-ink mb-1.5;
+    }
+    .badge-success {
+        @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold;
+        background-color: #D5F0E0;
+        color: #1E7A45;
+    }
+    .badge-danger {
+        @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold;
+        background-color: #FADADD;
+        color: #922B21;
+    }
+    .badge-warning {
+        @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold;
+        background-color: #FDF3DC;
+        color: #8A6620;
+    }
+    .badge-info {
+        @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold;
+        background-color: #EBF2ED;
+        color: #4A7259;
+    }
+    .nav-link {
+        @apply flex items-center gap-3 px-4 py-2.5 rounded-xl text-muted hover:bg-primary-light hover:text-primary-dark transition-colors text-sm font-medium;
+    }
+    .nav-link-active {
+        @apply bg-primary text-white hover:bg-primary-dark hover:text-white;
+    }
+    .table-base {
+        @apply w-full text-sm text-left;
+    }
+    .table-base th {
+        @apply px-4 py-3 bg-primary-light text-primary-dark font-semibold text-xs uppercase tracking-wide;
+    }
+    .table-base td {
+        @apply px-4 py-3 border-t border-bordered text-ink;
+    }
+    .star-rating input { display: none; }
+    .star-rating label {
+        @apply text-3xl text-bordered cursor-pointer transition;
+    }
+    .star-rating label:hover,
+    .star-rating label:hover ~ label,
+    .star-rating input:checked ~ label {
+        color: #D4A853;
+    }
+    .star-rating { display: inline-flex; flex-direction: row-reverse; }
+}
