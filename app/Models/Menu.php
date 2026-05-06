@@ -12,7 +12,7 @@ class Menu extends Model
     use HasFactory;
 
     protected $fillable = [
-        'sppg_id', 'tanggal', 'slot_1', 'slot_2', 'slot_3', 'slot_4', 'slot_5',
+        'sppg_id', 'tanggal', 'slot_1', 'slot_2', 'slot_3', 'slot_4', 'slot_5', 'foto_menu',
     ];
 
     protected $casts = [

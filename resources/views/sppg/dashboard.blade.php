@@ -29,7 +29,17 @@
 
     @if ($menuToday)
         <div class="card-white mb-6">
-            <h3 class="text-base font-semibold mb-3">Menu Hari Ini</h3>
+            <div class="flex items-center justify-between mb-3 gap-2">
+                <h3 class="text-base font-semibold">Menu Hari Ini</h3>
+                <a href="{{ route('sppg.menu.edit', $menuToday) }}"
+                   class="btn-secondary text-xs inline-flex items-center gap-1.5"
+                   title="Edit menu hari ini">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 20 20" fill="currentColor">
+                        <path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828zM2 17a1 1 0 011-1h14a1 1 0 110 2H3a1 1 0 01-1-1z"/>
+                    </svg>
+                    Edit Menu
+                </a>
+            </div>
             <div class="grid sm:grid-cols-5 gap-2">
                 @foreach ($menuToday->slots() as $label => $isi)
                     <div class="p-3 rounded-xl bg-primary-light text-center">

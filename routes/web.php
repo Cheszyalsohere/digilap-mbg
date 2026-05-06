@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AboutController;
 use App\Http\Controllers\Admin\AdminAnalisisController;
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\AdminUserController;
@@ -25,6 +26,8 @@ Route::get('/', function () {
     return redirect()->route('login');
 });
 
+Route::get('/about', [AboutController::class, 'index'])->name('about');
+
 Route::middleware('guest')->group(function () {
     Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
     Route::post('/login', [AuthController::class, 'login']);
@@ -44,6 +47,8 @@ Route::middleware(['auth', 'role:sppg'])->prefix('sppg')->name('sppg.')->group(f
     Route::get('/dashboard', [SppgDashboardController::class, 'index'])->name('dashboard');
     Route::get('/menu/create', [SppgMenuController::class, 'create'])->name('menu.create');
     Route::post('/menu', [SppgMenuController::class, 'store'])->name('menu.store');
+    Route::get('/menu/{menu}/edit', [SppgMenuController::class, 'edit'])->name('menu.edit');
+    Route::put('/menu/{menu}', [SppgMenuController::class, 'update'])->name('menu.update');
     Route::get('/laporan', [SppgLaporanController::class, 'index'])->name('laporan');
 });
 

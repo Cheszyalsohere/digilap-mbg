@@ -74,6 +74,10 @@
            class="nav-link {{ request()->routeIs('profile.*') ? 'nav-link-active' : '' }}">
             <span>Profil</span>
         </a>
+        <a href="{{ route('about') }}"
+           class="nav-link {{ request()->routeIs('about') ? 'nav-link-active' : '' }}">
+            <span>Tentang</span>
+        </a>
     </nav>
 
     <div class="px-3 py-4 border-t border-bordered">

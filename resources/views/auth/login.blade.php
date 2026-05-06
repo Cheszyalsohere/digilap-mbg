@@ -48,6 +48,9 @@
         <p class="text-center text-xs text-muted mt-6">
             &copy; {{ date('Y') }} DIGILAP MBG &middot; Demo akun: <code>admin / password</code>
         </p>
+        <p class="text-center text-xs mt-2">
+            <a href="{{ route('about') }}" class="text-primary hover:underline">Tentang DIGILAP MBG</a>
+        </p>
     </div>
 </body>
 </html>
