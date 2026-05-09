@@ -14,22 +14,22 @@
         </div>
     @endif
 
-    <div class="grid sm:grid-cols-3 gap-5 mb-6">
+    <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-5 mb-6">
         <div class="card">
             <p class="text-xs text-muted uppercase">Total Siswa</p>
-            <p class="text-3xl font-bold mt-1">{{ number_format($totalSiswa) }}</p>
+            <p class="text-2xl sm:text-3xl font-bold mt-1">{{ number_format($totalSiswa) }}</p>
         </div>
         <div class="card">
             <p class="text-xs text-muted uppercase">Total SPPG</p>
-            <p class="text-3xl font-bold mt-1">{{ number_format($totalSppg) }}</p>
+            <p class="text-2xl sm:text-3xl font-bold mt-1">{{ number_format($totalSppg) }}</p>
         </div>
-        <div class="card">
+        <div class="card col-span-2 sm:col-span-1">
             <p class="text-xs text-muted uppercase">Feedback Bulan Ini</p>
-            <p class="text-3xl font-bold mt-1">{{ number_format($totalFeedback) }}</p>
+            <p class="text-2xl sm:text-3xl font-bold mt-1">{{ number_format($totalFeedback) }}</p>
         </div>
     </div>
 
-    <div class="grid lg:grid-cols-3 gap-5 mb-6">
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 mb-6">
         @foreach ($sppgs as $row)
             <div class="card">
                 <div class="flex items-start justify-between mb-2">
@@ -56,7 +56,9 @@
 
     <div class="card-white">
         <h3 class="text-base font-semibold mb-3">Rata-rata Rating per SPPG (4 Minggu Terakhir)</h3>
-        <canvas id="weeklyChart" height="100"></canvas>
+        <div class="chart-wrap">
+            <canvas id="weeklyChart"></canvas>
+        </div>
     </div>
 
     <script>
@@ -74,6 +76,7 @@
             data: { labels, datasets },
             options: {
                 responsive: true,
+                maintainAspectRatio: false,
                 scales: { y: { min: 0, max: 5, ticks: { stepSize: 1 } } },
                 plugins: { legend: { position: 'bottom' } }
             }

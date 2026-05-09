@@ -4,8 +4,9 @@
 @endphp
 
 <aside id="app-sidebar"
-       class="hidden md:flex md:flex-col w-60 bg-white border-r border-bordered h-screen sticky top-0 shrink-0">
-    <div class="px-6 py-5 border-b border-bordered">
+       class="fixed lg:sticky top-0 left-0 z-40 w-60 bg-white border-r border-bordered h-screen shrink-0
+              flex flex-col transform -translate-x-full lg:translate-x-0 transition-transform duration-200">
+    <div class="px-6 py-5 border-b border-bordered flex items-center justify-between">
         <a href="/" class="flex items-center gap-2">
             <div class="w-9 h-9 rounded-xl bg-primary flex items-center justify-center text-white font-bold">D</div>
             <div>
@@ -13,6 +14,13 @@
                 <div class="text-[11px] text-muted leading-none mt-0.5">MBG Monitoring</div>
             </div>
         </a>
+        <button id="sidebar-close" type="button"
+                class="lg:hidden p-2 -mr-2 rounded-lg hover:bg-primary-light text-muted hover:text-ink"
+                aria-label="Tutup menu">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M6 6l12 12M18 6L6 18"/>
+            </svg>
+        </button>
     </div>
 
     <nav class="flex-1 px-3 py-4 space-y-1 overflow-y-auto text-sm">
@@ -58,6 +66,10 @@
             <a href="{{ route('admin.users.index') }}"
                class="nav-link {{ request()->routeIs('admin.users.*') ? 'nav-link-active' : '' }}">
                 <span>Manajemen User</span>
+            </a>
+            <a href="{{ route('admin.invitation-codes.index') }}"
+               class="nav-link {{ request()->routeIs('admin.invitation-codes.*') ? 'nav-link-active' : '' }}">
+                <span>Kode Undangan</span>
             </a>
         @endif
 

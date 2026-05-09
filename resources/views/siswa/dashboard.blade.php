@@ -4,11 +4,11 @@
 
 @section('content')
     <div class="mb-6">
-        <h2 class="text-2xl font-semibold">Halo, {{ auth()->user()->name }}</h2>
+        <h2 class="text-xl sm:text-2xl font-semibold">Halo, {{ auth()->user()->name }}</h2>
         <p class="text-sm text-muted">Cek menu hari ini dan beri feedback agar program MBG semakin baik.</p>
     </div>
 
-    <div class="grid md:grid-cols-2 gap-5 mb-6">
+    <div class="grid md:grid-cols-2 gap-4 sm:gap-5 mb-6">
         <div class="card">
             <div class="flex items-start justify-between mb-3">
                 <div>

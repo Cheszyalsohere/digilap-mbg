@@ -6,7 +6,7 @@
     <title>Login - DIGILAP MBG</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="min-h-screen bg-bg flex items-center justify-center px-4">
+<body class="min-h-screen bg-bg flex items-center justify-center px-4 py-8">
     <div class="w-full max-w-md">
         <div class="text-center mb-8">
             <div class="w-14 h-14 mx-auto rounded-2xl bg-primary flex items-center justify-center text-white text-2xl font-bold mb-3">D</div>
@@ -43,6 +43,11 @@
 
                 <button type="submit" class="btn-primary w-full justify-center">Masuk</button>
             </form>
+
+            <p class="text-center text-sm text-muted mt-5 pt-4 border-t border-bordered">
+                Belum punya akun?
+                <a href="{{ route('register') }}" class="text-primary font-semibold hover:underline">Daftar pakai kode undangan</a>
+            </p>
         </div>
 
         <p class="text-center text-xs text-muted mt-6">

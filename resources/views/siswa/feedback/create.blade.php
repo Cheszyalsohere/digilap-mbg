@@ -4,10 +4,10 @@
 
 @section('content')
     <div class="card-white max-w-2xl">
-        <h2 class="text-xl font-semibold mb-1">Beri Feedback untuk Menu Hari Ini</h2>
+        <h2 class="text-lg sm:text-xl font-semibold mb-1">Beri Feedback untuk Menu Hari Ini</h2>
         <p class="text-sm text-muted mb-5">{{ now()->translatedFormat('l, d F Y') }} &middot; {{ $menu->sppg?->name }}</p>
 
-        <div class="grid sm:grid-cols-5 gap-2 mb-6">
+        <div class="grid grid-cols-2 sm:grid-cols-5 gap-2 mb-6">
             @foreach ($menu->slots() as $label => $isi)
                 <div class="p-3 rounded-xl bg-primary-light text-center">
                     <p class="text-[10px] uppercase text-primary-dark font-semibold">{{ $label }}</p>
@@ -44,9 +44,9 @@
                 @error('komentar') <p class="text-xs text-danger mt-1">{{ $message }}</p> @enderror
             </div>
 
-            <div class="flex gap-2">
-                <button type="submit" class="btn-primary">Kirim Feedback</button>
-                <a href="{{ route('siswa.dashboard') }}" class="btn-secondary">Batal</a>
+            <div class="flex flex-col sm:flex-row gap-2">
+                <button type="submit" class="btn-primary w-full sm:w-auto">Kirim Feedback</button>
+                <a href="{{ route('siswa.dashboard') }}" class="btn-secondary w-full sm:w-auto">Batal</a>
             </div>
         </form>
     </div>

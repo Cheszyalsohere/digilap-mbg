@@ -21,22 +21,22 @@
 
 @layer components {
     .btn-primary {
-        @apply inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-primary text-white font-medium hover:bg-primary-dark transition-colors disabled:opacity-50 disabled:cursor-not-allowed;
+        @apply inline-flex items-center justify-center gap-2 px-5 py-2.5 min-h-[44px] rounded-xl bg-primary text-white font-medium hover:bg-primary-dark transition-colors disabled:opacity-50 disabled:cursor-not-allowed;
     }
     .btn-secondary {
-        @apply inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-transparent border border-primary text-primary font-medium hover:bg-primary-light transition-colors;
+        @apply inline-flex items-center justify-center gap-2 px-5 py-2.5 min-h-[44px] rounded-xl bg-transparent border border-primary text-primary font-medium hover:bg-primary-light transition-colors;
     }
     .btn-danger {
-        @apply inline-flex items-center justify-center gap-2 px-4 py-2 rounded-xl bg-danger text-white font-medium hover:opacity-90 transition;
+        @apply inline-flex items-center justify-center gap-2 px-4 py-2 min-h-[40px] rounded-xl bg-danger text-white font-medium hover:opacity-90 transition;
     }
     .card {
-        @apply bg-surface border border-bordered rounded-2xl p-6 shadow-soft;
+        @apply bg-surface border border-bordered rounded-2xl p-5 sm:p-6 shadow-soft;
     }
     .card-white {
-        @apply bg-white border border-bordered rounded-2xl p-6 shadow-soft;
+        @apply bg-white border border-bordered rounded-2xl p-5 sm:p-6 shadow-soft;
     }
     .input {
-        @apply w-full px-4 py-2.5 bg-white border border-bordered rounded-xl text-ink focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition;
+        @apply w-full px-4 py-2.5 min-h-[44px] bg-white border border-bordered rounded-xl text-ink focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition;
     }
     .label {
         @apply block text-sm font-medium text-ink mb-1.5;
@@ -71,19 +71,35 @@
         @apply w-full text-sm text-left;
     }
     .table-base th {
-        @apply px-4 py-3 bg-primary-light text-primary-dark font-semibold text-xs uppercase tracking-wide;
+        @apply px-4 py-3 bg-primary-light text-primary-dark font-semibold text-xs uppercase tracking-wide whitespace-nowrap;
     }
     .table-base td {
         @apply px-4 py-3 border-t border-bordered text-ink;
     }
     .star-rating input { display: none; }
     .star-rating label {
-        @apply text-3xl text-bordered cursor-pointer transition;
+        @apply text-4xl text-bordered cursor-pointer transition select-none;
+        min-width: 44px;
+        text-align: center;
+        line-height: 1;
+        padding: 4px 2px;
     }
     .star-rating label:hover,
     .star-rating label:hover ~ label,
     .star-rating input:checked ~ label {
         color: #D4A853;
     }
-    .star-rating { display: inline-flex; flex-direction: row-reverse; }
+    .star-rating { display: inline-flex; flex-direction: row-reverse; gap: 4px; }
+
+    .chart-wrap {
+        position: relative;
+        width: 100%;
+        height: 240px;
+    }
+}
+
+@media (min-width: 640px) {
+    .chart-wrap {
+        height: 320px;
+    }
 }

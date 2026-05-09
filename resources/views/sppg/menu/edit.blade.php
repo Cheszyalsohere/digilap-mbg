@@ -4,7 +4,7 @@
 
 @section('content')
     <div class="card-white max-w-2xl">
-        <h2 class="text-xl font-semibold mb-1">Edit Menu &mdash; {{ $menu->tanggal->translatedFormat('l, d F Y') }}</h2>
+        <h2 class="text-lg sm:text-xl font-semibold mb-1 break-words">Edit Menu &mdash; {{ $menu->tanggal->translatedFormat('l, d F Y') }}</h2>
         <p class="text-sm text-muted mb-1">Perbarui komposisi makanan jika ada perubahan mendadak.</p>
         <p class="text-xs text-muted mb-5">
             Terakhir diubah: {{ $menu->updated_at->translatedFormat('d F Y, H:i') }}
@@ -71,9 +71,9 @@
                 </div>
             </div>
 
-            <div class="flex gap-2 pt-2">
-                <button type="submit" class="btn-primary">Simpan Perubahan</button>
-                <a href="{{ route('sppg.dashboard') }}" class="btn-secondary">Batal</a>
+            <div class="flex flex-col sm:flex-row gap-2 pt-2">
+                <button type="submit" class="btn-primary w-full sm:w-auto">Simpan Perubahan</button>
+                <a href="{{ route('sppg.dashboard') }}" class="btn-secondary w-full sm:w-auto">Batal</a>
             </div>
         </form>
     </div>

@@ -4,21 +4,21 @@
 
 @section('content')
     <div class="card-white">
-        <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
-            <form method="GET" class="flex flex-wrap gap-2">
-                <input type="text" name="q" value="{{ request('q') }}" placeholder="Cari nama / username / email" class="input w-64">
-                <select name="role" class="input w-40">
+        <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3 mb-4">
+            <form method="GET" class="grid grid-cols-1 sm:grid-cols-[1fr_auto_auto] gap-2">
+                <input type="text" name="q" value="{{ request('q') }}" placeholder="Cari nama / username / email" class="input sm:w-64">
+                <select name="role" class="input sm:w-40">
                     <option value="">Semua role</option>
                     @foreach (['siswa', 'sppg', 'admin'] as $r)
                         <option value="{{ $r }}" @selected(request('role') === $r)>{{ ucfirst($r) }}</option>
                     @endforeach
                 </select>
-                <button class="btn-primary">Cari</button>
+                <button class="btn-primary w-full sm:w-auto">Cari</button>
             </form>
-            <a href="{{ route('admin.users.create') }}" class="btn-primary">+ Tambah User</a>
+            <a href="{{ route('admin.users.create') }}" class="btn-primary w-full lg:w-auto">+ Tambah User</a>
         </div>
 
-        <div class="overflow-x-auto">
+        <div class="overflow-x-auto -mx-5 sm:mx-0 px-5 sm:px-0">
             <table class="table-base">
                 <thead>
                     <tr>

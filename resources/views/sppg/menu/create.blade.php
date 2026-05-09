@@ -4,7 +4,7 @@
 
 @section('content')
     <div class="card-white max-w-2xl">
-        <h2 class="text-xl font-semibold mb-1">Input Menu — {{ now()->translatedFormat('l, d F Y') }}</h2>
+        <h2 class="text-lg sm:text-xl font-semibold mb-1 break-words">Input Menu — {{ now()->translatedFormat('l, d F Y') }}</h2>
         <p class="text-sm text-muted mb-5">Lengkapi 5 slot komponen makanan untuk hari ini.</p>
 
         <form method="POST" action="{{ route('sppg.menu.store') }}" class="space-y-4" enctype="multipart/form-data">
@@ -43,9 +43,9 @@
                 </div>
             </div>
 
-            <div class="flex gap-2 pt-2">
-                <button type="submit" class="btn-primary">Simpan Menu</button>
-                <a href="{{ route('sppg.dashboard') }}" class="btn-secondary">Batal</a>
+            <div class="flex flex-col sm:flex-row gap-2 pt-2">
+                <button type="submit" class="btn-primary w-full sm:w-auto">Simpan Menu</button>
+                <a href="{{ route('sppg.dashboard') }}" class="btn-secondary w-full sm:w-auto">Batal</a>
             </div>
         </form>
     </div>

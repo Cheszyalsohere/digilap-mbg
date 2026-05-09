@@ -16,16 +16,16 @@
                 <label class="label">Tanggal</label>
                 <input type="date" name="tanggal" value="{{ request('tanggal') }}" class="input">
             </div>
-            <div class="flex items-end gap-2 sm:col-start-3">
-                <button class="btn-primary">Filter</button>
-                <a href="{{ route('sppg.laporan') }}" class="btn-secondary">Reset</a>
+            <div class="flex flex-col sm:flex-row items-stretch sm:items-end gap-2 sm:col-start-3">
+                <button class="btn-primary w-full sm:w-auto">Filter</button>
+                <a href="{{ route('sppg.laporan') }}" class="btn-secondary w-full sm:w-auto">Reset</a>
             </div>
         </form>
 
         @if ($feedbacks->isEmpty())
             <p class="text-sm text-muted py-8 text-center">Belum ada feedback.</p>
         @else
-            <div class="overflow-x-auto">
+            <div class="overflow-x-auto -mx-5 sm:mx-0 px-5 sm:px-0">
                 <table class="table-base">
                     <thead>
                         <tr>

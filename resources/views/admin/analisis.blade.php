@@ -8,21 +8,21 @@
 
 @section('content')
     <div class="card-white mb-6">
-        <form method="GET" class="flex flex-wrap gap-3 items-end">
+        <form method="GET" class="grid sm:grid-cols-[auto_1fr] gap-3 items-end">
             <div>
                 <label class="label">Bulan</label>
-                <input type="month" name="bulan" value="{{ $bulan }}" class="input">
+                <input type="month" name="bulan" value="{{ $bulan }}" class="input sm:w-48">
             </div>
-            <div class="flex gap-2">
-                <button class="btn-primary">Tampilkan</button>
-                <a href="{{ route('admin.export', ['bulan' => $bulan]) }}" class="btn-secondary">Export CSV</a>
+            <div class="flex flex-wrap gap-2">
+                <button class="btn-primary flex-1 sm:flex-none">Tampilkan</button>
+                <a href="{{ route('admin.export', ['bulan' => $bulan]) }}" class="btn-secondary flex-1 sm:flex-none">Export CSV</a>
             </div>
         </form>
     </div>
 
     <div class="card-white mb-6">
         <h3 class="text-base font-semibold mb-3">Ringkasan per SPPG</h3>
-        <div class="overflow-x-auto">
+        <div class="overflow-x-auto -mx-5 sm:mx-0 px-5 sm:px-0">
             <table class="table-base">
                 <thead>
                     <tr>
@@ -60,7 +60,9 @@
 
     <div class="card-white">
         <h3 class="text-base font-semibold mb-3">Perbandingan % Kepuasan antar SPPG</h3>
-        <canvas id="puasChart" height="100"></canvas>
+        <div class="chart-wrap">
+            <canvas id="puasChart"></canvas>
+        </div>
     </div>
 
     <script>
@@ -78,6 +80,7 @@
             },
             options: {
                 responsive: true,
+                maintainAspectRatio: false,
                 scales: { y: { min: 0, max: 100, ticks: { callback: v => v + '%' } } },
                 plugins: { legend: { display: false } }
             }

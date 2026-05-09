@@ -3,8 +3,10 @@
 use App\Http\Controllers\AboutController;
 use App\Http\Controllers\Admin\AdminAnalisisController;
 use App\Http\Controllers\Admin\AdminDashboardController;
+use App\Http\Controllers\Admin\AdminInvitationCodeController;
 use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Siswa\FeedbackController;
@@ -31,6 +33,8 @@ Route::get('/about', [AboutController::class, 'index'])->name('about');
 Route::middleware('guest')->group(function () {
     Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
     Route::post('/login', [AuthController::class, 'login']);
+    Route::get('/register', [RegisterController::class, 'show'])->name('register');
+    Route::post('/register', [RegisterController::class, 'store']);
 });
 
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth')->name('logout');
@@ -57,6 +61,9 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::get('/analisis', [AdminAnalisisController::class, 'index'])->name('analisis');
     Route::get('/export', [AdminAnalisisController::class, 'export'])->name('export');
     Route::resource('users', AdminUserController::class);
+    Route::resource('invitation-codes', AdminInvitationCodeController::class)
+        ->parameters(['invitation-codes' => 'invitation_code'])
+        ->except(['show', 'edit']);
 });
 
 Route::middleware('auth')->group(function () {

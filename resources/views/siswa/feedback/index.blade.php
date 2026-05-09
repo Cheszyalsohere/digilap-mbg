@@ -8,7 +8,7 @@
         @if ($feedbacks->isEmpty())
             <p class="text-sm text-muted py-8 text-center">Belum ada feedback.</p>
         @else
-            <div class="overflow-x-auto">
+            <div class="overflow-x-auto -mx-5 sm:mx-0 px-5 sm:px-0">
                 <table class="table-base">
                     <thead>
                         <tr>

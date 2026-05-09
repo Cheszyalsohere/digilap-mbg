@@ -4,24 +4,24 @@
 
 @section('content')
     <div class="mb-6">
-        <h2 class="text-2xl font-semibold">{{ auth()->user()->sppg?->name ?? 'SPPG' }}</h2>
+        <h2 class="text-xl sm:text-2xl font-semibold break-words">{{ auth()->user()->sppg?->name ?? 'SPPG' }}</h2>
         <p class="text-sm text-muted">Pantau feedback siswa hari ini.</p>
     </div>
 
-    <div class="grid sm:grid-cols-3 gap-5 mb-6">
+    <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-5 mb-6">
         <div class="card">
             <p class="text-xs text-muted uppercase">Feedback Hari Ini</p>
-            <p class="text-3xl font-bold mt-1">{{ $totalToday }}</p>
+            <p class="text-2xl sm:text-3xl font-bold mt-1">{{ $totalToday }}</p>
         </div>
         <div class="card">
             <p class="text-xs text-muted uppercase">Rata-rata Rating</p>
-            <p class="text-3xl font-bold mt-1">{{ $avgRatingToday ?? '—' }} <span class="text-sm font-normal text-muted">/5</span></p>
+            <p class="text-2xl sm:text-3xl font-bold mt-1">{{ $avgRatingToday ?? '—' }} <span class="text-sm font-normal text-muted">/5</span></p>
         </div>
-        <div class="card flex flex-col">
+        <div class="card flex flex-col col-span-2 sm:col-span-1">
             <p class="text-xs text-muted uppercase">Status Menu</p>
             <p class="text-base font-semibold mt-1">{{ $sudahInputMenu ? 'Sudah diinput' : 'Belum diinput' }}</p>
             <a href="{{ route('sppg.menu.create') }}"
-               class="btn-primary mt-3 {{ $sudahInputMenu ? 'pointer-events-none opacity-50' : '' }}">
+               class="btn-primary mt-3 w-full {{ $sudahInputMenu ? 'pointer-events-none opacity-50' : '' }}">
                 Input Menu Hari Ini
             </a>
         </div>
@@ -40,7 +40,7 @@
                     Edit Menu
                 </a>
             </div>
-            <div class="grid sm:grid-cols-5 gap-2">
+            <div class="grid grid-cols-2 sm:grid-cols-5 gap-2">
                 @foreach ($menuToday->slots() as $label => $isi)
                     <div class="p-3 rounded-xl bg-primary-light text-center">
                         <p class="text-[10px] uppercase text-primary-dark font-semibold">{{ $label }}</p>

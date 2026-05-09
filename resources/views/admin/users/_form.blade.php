@@ -62,7 +62,7 @@
     </div>
 </div>
 
-<div class="mt-5 flex gap-2">
-    <button type="submit" class="btn-primary">Simpan</button>
-    <a href="{{ route('admin.users.index') }}" class="btn-secondary">Batal</a>
+<div class="mt-5 flex flex-col sm:flex-row gap-2">
+    <button type="submit" class="btn-primary w-full sm:w-auto">Simpan</button>
+    <a href="{{ route('admin.users.index') }}" class="btn-secondary w-full sm:w-auto">Batal</a>
 </div>

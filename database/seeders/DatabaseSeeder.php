@@ -11,8 +11,6 @@ class DatabaseSeeder extends Seeder
         $this->call([
             SppgSeeder::class,
             UserSeeder::class,
-            MenuSeeder::class,
-            FeedbackSeeder::class,
         ]);
     }
 }
