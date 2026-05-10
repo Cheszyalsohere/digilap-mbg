@@ -2,16 +2,24 @@
 
 namespace App\Http\Controllers\Sppg;
 
+use App\Concerns\LogsActivity;
 use App\Http\Controllers\Controller;
+use App\Models\Allergy;
 use App\Models\Menu;
+use App\Models\User;
+use App\Notifications\MenuUpdated;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
 
 class MenuController extends Controller
 {
+    use LogsActivity;
+
     public function create(Request $request): View|RedirectResponse
     {
         $existing = Menu::where('sppg_id', $request->user()->sppg_id)
@@ -23,18 +31,27 @@ class MenuController extends Controller
                 ->with('error', 'Menu untuk hari ini sudah diinput.');
         }
 
-        return view('sppg.menu.create');
+        $allergyStats = $this->allergyStats($request->user()->sppg_id);
+
+        return view('sppg.menu.create', compact('allergyStats'));
     }
 
     public function store(Request $request): RedirectResponse
     {
         $data = $request->validate([
-            'slot_1'    => ['required', 'string', 'max:255'],
-            'slot_2'    => ['required', 'string', 'max:255'],
-            'slot_3'    => ['required', 'string', 'max:255'],
-            'slot_4'    => ['required', 'string', 'max:255'],
-            'slot_5'    => ['required', 'string', 'max:255'],
-            'foto_menu' => ['nullable', 'image', 'mimes:jpg,jpeg,png', 'max:2048'],
+            'slot_1'         => ['required', 'string', 'max:255'],
+            'slot_2'         => ['required', 'string', 'max:255'],
+            'slot_3'         => ['required', 'string', 'max:255'],
+            'slot_4'         => ['required', 'string', 'max:255'],
+            'slot_5'         => ['required', 'string', 'max:255'],
+            'foto_menu'      => ['nullable', 'image', 'mimes:jpg,jpeg,png', 'max:2048'],
+            'has_alternatif' => ['nullable', 'boolean'],
+            'alt_slot_1'     => ['nullable', 'string', 'max:255'],
+            'alt_slot_2'     => ['nullable', 'string', 'max:255'],
+            'alt_slot_3'     => ['nullable', 'string', 'max:255'],
+            'alt_slot_4'     => ['nullable', 'string', 'max:255'],
+            'alt_slot_5'     => ['nullable', 'string', 'max:255'],
+            'alt_keterangan' => ['nullable', 'string', 'max:255'],
         ]);
 
         $user = $request->user();
@@ -54,16 +71,33 @@ class MenuController extends Controller
             $fotoPath = $this->storeFoto($request->file('foto_menu'), $user->sppg_id, $today->toDateString());
         }
 
-        Menu::create([
-            'sppg_id'   => $user->sppg_id,
-            'tanggal'   => $today,
-            'slot_1'    => $data['slot_1'],
-            'slot_2'    => $data['slot_2'],
-            'slot_3'    => $data['slot_3'],
-            'slot_4'    => $data['slot_4'],
-            'slot_5'    => $data['slot_5'],
-            'foto_menu' => $fotoPath,
+        $hasAlt = $request->boolean('has_alternatif');
+
+        $menu = Menu::create([
+            'sppg_id'        => $user->sppg_id,
+            'tanggal'        => $today,
+            'slot_1'         => $data['slot_1'],
+            'slot_2'         => $data['slot_2'],
+            'slot_3'         => $data['slot_3'],
+            'slot_4'         => $data['slot_4'],
+            'slot_5'         => $data['slot_5'],
+            'foto_menu'      => $fotoPath,
+            'has_alternatif' => $hasAlt,
+            'alt_slot_1'     => $hasAlt ? ($data['alt_slot_1'] ?? null) : null,
+            'alt_slot_2'     => $hasAlt ? ($data['alt_slot_2'] ?? null) : null,
+            'alt_slot_3'     => $hasAlt ? ($data['alt_slot_3'] ?? null) : null,
+            'alt_slot_4'     => $hasAlt ? ($data['alt_slot_4'] ?? null) : null,
+            'alt_slot_5'     => $hasAlt ? ($data['alt_slot_5'] ?? null) : null,
+            'alt_keterangan' => $hasAlt ? ($data['alt_keterangan'] ?? null) : null,
         ]);
+
+        $this->notifySiswa($menu, $user);
+
+        $this->logActivity(
+            "Menginput menu tanggal {$menu->tanggal->format('Y-m-d')}",
+            null,
+            $menu
+        );
 
         return redirect()->route('sppg.dashboard')
             ->with('success', 'Menu hari ini berhasil disimpan.');
@@ -73,7 +107,9 @@ class MenuController extends Controller
     {
         $this->authorizeEdit($request, $menu);
 
-        return view('sppg.menu.edit', compact('menu'));
+        $allergyStats = $this->allergyStats($request->user()->sppg_id);
+
+        return view('sppg.menu.edit', compact('menu', 'allergyStats'));
     }
 
     public function update(Request $request, Menu $menu): RedirectResponse
@@ -81,21 +117,37 @@ class MenuController extends Controller
         $this->authorizeEdit($request, $menu);
 
         $data = $request->validate([
-            'slot_1'      => ['required', 'string', 'max:255'],
-            'slot_2'      => ['required', 'string', 'max:255'],
-            'slot_3'      => ['required', 'string', 'max:255'],
-            'slot_4'      => ['required', 'string', 'max:255'],
-            'slot_5'      => ['required', 'string', 'max:255'],
-            'foto_menu'   => ['nullable', 'image', 'mimes:jpg,jpeg,png', 'max:2048'],
-            'hapus_foto'  => ['nullable', 'boolean'],
+            'slot_1'         => ['required', 'string', 'max:255'],
+            'slot_2'         => ['required', 'string', 'max:255'],
+            'slot_3'         => ['required', 'string', 'max:255'],
+            'slot_4'         => ['required', 'string', 'max:255'],
+            'slot_5'         => ['required', 'string', 'max:255'],
+            'foto_menu'      => ['nullable', 'image', 'mimes:jpg,jpeg,png', 'max:2048'],
+            'hapus_foto'     => ['nullable', 'boolean'],
+            'has_alternatif' => ['nullable', 'boolean'],
+            'alt_slot_1'     => ['nullable', 'string', 'max:255'],
+            'alt_slot_2'     => ['nullable', 'string', 'max:255'],
+            'alt_slot_3'     => ['nullable', 'string', 'max:255'],
+            'alt_slot_4'     => ['nullable', 'string', 'max:255'],
+            'alt_slot_5'     => ['nullable', 'string', 'max:255'],
+            'alt_keterangan' => ['nullable', 'string', 'max:255'],
         ]);
 
+        $hasAlt = $request->boolean('has_alternatif');
+
         $payload = [
-            'slot_1' => $data['slot_1'],
-            'slot_2' => $data['slot_2'],
-            'slot_3' => $data['slot_3'],
-            'slot_4' => $data['slot_4'],
-            'slot_5' => $data['slot_5'],
+            'slot_1'         => $data['slot_1'],
+            'slot_2'         => $data['slot_2'],
+            'slot_3'         => $data['slot_3'],
+            'slot_4'         => $data['slot_4'],
+            'slot_5'         => $data['slot_5'],
+            'has_alternatif' => $hasAlt,
+            'alt_slot_1'     => $hasAlt ? ($data['alt_slot_1'] ?? null) : null,
+            'alt_slot_2'     => $hasAlt ? ($data['alt_slot_2'] ?? null) : null,
+            'alt_slot_3'     => $hasAlt ? ($data['alt_slot_3'] ?? null) : null,
+            'alt_slot_4'     => $hasAlt ? ($data['alt_slot_4'] ?? null) : null,
+            'alt_slot_5'     => $hasAlt ? ($data['alt_slot_5'] ?? null) : null,
+            'alt_keterangan' => $hasAlt ? ($data['alt_keterangan'] ?? null) : null,
         ];
 
         if ($request->hasFile('foto_menu')) {
@@ -116,8 +168,43 @@ class MenuController extends Controller
 
         $menu->update($payload);
 
+        $this->notifySiswa($menu, $request->user());
+
+        $this->logActivity(
+            "Mengedit menu tanggal {$menu->tanggal->format('Y-m-d')}",
+            null,
+            $menu
+        );
+
         return redirect()->route('sppg.dashboard')
             ->with('success', 'Menu berhasil diperbarui. Siswa akan melihat menu terbaru.');
+    }
+
+    private function allergyStats(int $sppgId)
+    {
+        return Allergy::leftJoin('user_allergies', 'allergies.id', '=', 'user_allergies.allergy_id')
+            ->leftJoin('users', function ($j) use ($sppgId) {
+                $j->on('users.id', '=', 'user_allergies.user_id')
+                    ->where('users.role', 'siswa')
+                    ->where('users.sppg_id', $sppgId);
+            })
+            ->groupBy('allergies.id', 'allergies.name', 'allergies.slug')
+            ->orderBy('allergies.id')
+            ->select('allergies.id', 'allergies.name', 'allergies.slug', DB::raw('COUNT(users.id) as siswa_count'))
+            ->get()
+            ->filter(fn ($r) => $r->siswa_count > 0)
+            ->values();
+    }
+
+    private function notifySiswa(Menu $menu, User $sppgUser): void
+    {
+        if (! $menu->tanggal->isToday()) {
+            return;
+        }
+
+        $siswa = User::where('role', 'siswa')->where('sppg_id', $menu->sppg_id)->get();
+        $sppgName = $sppgUser->sppg?->name ?? $sppgUser->name;
+        Notification::send($siswa, new MenuUpdated($menu, $sppgName));
     }
 
     private function authorizeEdit(Request $request, Menu $menu): void

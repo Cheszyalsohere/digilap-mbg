@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Siswa;
 
+use App\Concerns\LogsActivity;
 use App\Http\Controllers\Controller;
 use App\Models\Feedback;
 use App\Models\Menu;
@@ -14,6 +15,8 @@ use Illuminate\View\View;
 
 class FeedbackController extends Controller
 {
+    use LogsActivity;
+
     public function index(Request $request): View
     {
         $feedbacks = Feedback::with('menu')
@@ -27,6 +30,8 @@ class FeedbackController extends Controller
     public function create(Request $request): View|RedirectResponse
     {
         $user = $request->user();
+        $user->loadMissing('allergies');
+
         $menu = Menu::where('sppg_id', $user->sppg_id)
             ->whereDate('tanggal', today())
             ->first();
@@ -45,7 +50,9 @@ class FeedbackController extends Controller
                 ->with('error', 'Anda sudah mengisi feedback untuk hari ini.');
         }
 
-        return view('siswa.feedback.create', compact('menu'));
+        $menuView = $menu->getMenuForUser($user);
+
+        return view('siswa.feedback.create', compact('menu', 'menuView'));
     }
 
     public function store(Request $request): RedirectResponse
@@ -84,6 +91,12 @@ class FeedbackController extends Controller
 
         $sppgStaff = User::where('role', 'sppg')->where('sppg_id', $menu->sppg_id)->get();
         Notification::send($sppgStaff, new NewFeedbackReceived($feedback));
+
+        $this->logActivity(
+            "Mengirim feedback menu {$menu->tanggal->format('Y-m-d')} — rating {$feedback->rating}★",
+            $feedback->komentar,
+            $feedback
+        );
 
         return redirect()->route('siswa.dashboard')
             ->with('success', 'Terima kasih! Feedback Anda telah tercatat.');

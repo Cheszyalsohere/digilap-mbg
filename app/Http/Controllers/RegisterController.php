@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Concerns\LogsActivity;
+use App\Models\Allergy;
 use App\Models\InvitationCode;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
@@ -12,17 +14,23 @@ use Illuminate\View\View;
 
 class RegisterController extends Controller
 {
+    use LogsActivity;
+
     public function show(): View
     {
-        return view('auth.register');
+        $allergies = Allergy::orderBy('id')->get();
+        return view('auth.register', compact('allergies'));
     }
 
     public function store(Request $request): RedirectResponse
     {
         $data = $request->validate([
-            'name'     => ['required', 'string', 'max:120'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
-            'code'     => ['required', 'string', 'max:32'],
+            'name'              => ['required', 'string', 'max:120'],
+            'password'          => ['required', 'string', 'min:8', 'confirmed'],
+            'code'              => ['required', 'string', 'max:32'],
+            'allergies'         => ['nullable', 'array'],
+            'allergies.*'       => ['integer', 'exists:allergies,id'],
+            'allergy_lainnya'   => ['nullable', 'string', 'max:255'],
         ], [], [
             'name'     => 'nama lengkap',
             'password' => 'password',
@@ -50,8 +58,27 @@ class RegisterController extends Controller
 
         $code->increment('used_count');
 
+        if (! empty($data['allergies'])) {
+            $lainnyaId = Allergy::where('slug', 'lainnya')->value('id');
+            $sync = [];
+            foreach ($data['allergies'] as $allergyId) {
+                $sync[$allergyId] = [
+                    'catatan' => ($allergyId == $lainnyaId)
+                        ? ($data['allergy_lainnya'] ?? null)
+                        : null,
+                ];
+            }
+            $user->allergies()->sync($sync);
+        }
+
         Auth::login($user);
         $request->session()->regenerate();
+
+        $this->logActivity(
+            "Registrasi akun baru via kode {$code->code}",
+            "Username: {$user->username}, Sekolah: {$user->sekolah}",
+            $user
+        );
 
         return redirect()->route('siswa.dashboard')->with(
             'success',

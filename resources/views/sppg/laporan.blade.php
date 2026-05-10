@@ -3,13 +3,53 @@
 @section('page_title', 'Laporan Feedback')
 
 @section('content')
+    @if ($allergyStats->isNotEmpty())
+        <div class="card-white mb-5 border-l-4 border-primary">
+            <div class="flex items-start gap-2">
+                <span aria-hidden="true" class="text-lg">🥜</span>
+                <div class="flex-1">
+                    <p class="text-sm font-semibold mb-1">Rekap Alergi Siswa &mdash; {{ $sekolah ?? '—' }}</p>
+                    <p class="text-xs text-muted mb-3">Gunakan info ini untuk menyiapkan menu alternatif sebelum masak.</p>
+                    <div class="overflow-x-auto -mx-5 sm:mx-0 px-5 sm:px-0">
+                        <table class="table-base w-full sm:max-w-md">
+                            <thead>
+                                <tr>
+                                    <th>Alergi</th>
+                                    <th class="text-right">Jumlah</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($allergyStats as $stat)
+                                    <tr>
+                                        <td>{{ $stat->name }}</td>
+                                        <td class="text-right">{{ $stat->siswa_count }} siswa</td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
+
     <div class="card-white">
-        <p class="text-xs text-muted mb-4">
-            Menampilkan laporan dari siswa
-            <span class="font-semibold text-ink">{{ $sekolah ?? '—' }}</span>
-            &mdash;
-            <span class="font-semibold text-ink">{{ auth()->user()->sppg?->name ?? 'SPPG' }}</span>.
-        </p>
+        <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 mb-4">
+            <p class="text-xs text-muted">
+                Menampilkan laporan dari siswa
+                <span class="font-semibold text-ink">{{ $sekolah ?? '—' }}</span>
+                &mdash;
+                <span class="font-semibold text-ink">{{ auth()->user()->sppg?->name ?? 'SPPG' }}</span>.
+            </p>
+            <a href="{{ route('sppg.laporan.export-pdf', ['bulan' => now()->format('Y-m')]) }}"
+               target="_blank"
+               class="inline-flex items-center justify-center gap-2 px-5 py-2.5 min-h-[44px] rounded-xl bg-accent text-white font-medium hover:opacity-90 transition w-full sm:w-auto shrink-0">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v8.586l2.293-2.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 111.414-1.414L9 12.586V4a1 1 0 011-1zm-7 13a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"/>
+                </svg>
+                Export PDF
+            </a>
+        </div>
 
         <form method="GET" class="grid sm:grid-cols-3 gap-3 mb-5">
             <div>

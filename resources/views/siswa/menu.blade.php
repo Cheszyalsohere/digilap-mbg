@@ -3,6 +3,7 @@
 @section('page_title', 'Menu Hari Ini')
 
 @section('content')
+    @php $user = auth()->user(); @endphp
     <div class="card-white max-w-2xl">
         <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 mb-4">
             <div class="min-w-0">
@@ -15,6 +16,32 @@
         </div>
 
         @if ($menuToday)
+            @if ($menuView['is_alternatif'])
+                <div class="mb-4 p-4 rounded-xl bg-primary-light dark:bg-[#1A2E23] border-l-4 border-primary">
+                    <p class="text-sm font-semibold flex items-center gap-1.5">
+                        <span aria-hidden="true">🌿</span>
+                        Kamu mendapatkan menu alternatif
+                    </p>
+                    <p class="text-xs text-muted mt-1">
+                        Karena kamu memiliki alergi: <span class="font-medium text-ink dark:text-[#E8EDE9]">{{ $user->allergyNames() }}</span>.
+                        @if (! empty($menuView['keterangan']))
+                            <span class="block mt-1">{{ $menuView['keterangan'] }}</span>
+                        @endif
+                    </p>
+                </div>
+            @elseif ($user->hasAllergy() && ! $menuToday->has_alternatif)
+                <div class="mb-4 p-4 rounded-xl bg-[#FDF3DC] dark:bg-[#3D3320] border-l-4 border-warning">
+                    <p class="text-sm font-semibold text-[#8A6620] dark:text-[#E8C778] flex items-center gap-1.5">
+                        <span aria-hidden="true">⚠️</span>
+                        Perhatian: Cek kandungan menu hari ini
+                    </p>
+                    <p class="text-xs text-[#8A6620] dark:text-[#E8C778] mt-1">
+                        Menu hari ini mungkin mengandung bahan yang tidak sesuai dengan alergimu ({{ $user->allergyNames() }}).
+                        Hubungi SPPG untuk informasi lebih lanjut.
+                    </p>
+                </div>
+            @endif
+
             @if ($menuToday->foto_menu)
                 <img src="{{ asset('storage/' . $menuToday->foto_menu) }}"
                      alt="Foto menu hari ini"
@@ -28,7 +55,7 @@
                 </div>
             @endif
             <div class="grid sm:grid-cols-2 gap-3">
-                @foreach ($menuToday->slots() as $label => $isi)
+                @foreach ($menuView['slots'] as $label => $isi)
                     <div class="p-4 rounded-xl bg-primary-light">
                         <p class="text-[11px] uppercase text-primary-dark tracking-wide font-semibold">{{ $label }}</p>
                         <p class="text-sm text-ink mt-1">{{ $isi }}</p>

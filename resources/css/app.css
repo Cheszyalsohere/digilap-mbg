@@ -4,11 +4,32 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+    --color-bg: #FAFAF7;
+    --color-text: #2C2C2A;
+}
+
+.dark {
+    --color-primary: #6BA882;
+    --color-primary-dark: #5C8B6E;
+    --color-primary-light: #1A2E23;
+    --color-accent: #D4A853;
+    --color-accent-light: #2A2210;
+    --color-bg: #0F1410;
+    --color-surface: #1A1F1B;
+    --color-border: #2A332C;
+    --color-text: #E8EDE9;
+    --color-text-muted: #8A9E8D;
+    --color-danger: #E05C4B;
+    --color-success: #4CAF7D;
+    --color-warning: #D4A853;
+}
+
 @layer base {
     html {
         font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
-        background-color: #FAFAF7;
-        color: #2C2C2A;
+        background-color: var(--color-bg);
+        color: var(--color-text);
     }
     body {
         line-height: 1.7;
@@ -16,6 +37,37 @@
     h1, h2, h3, h4, h5, h6 {
         font-weight: 600;
         color: #2C2C2A;
+    }
+    .dark body {
+        background-color: #0F1410;
+        color: #E8EDE9;
+    }
+    .dark h1, .dark h2, .dark h3, .dark h4, .dark h5, .dark h6 {
+        color: #E8EDE9;
+    }
+    .dark .text-ink { color: #E8EDE9; }
+    .dark .text-muted { color: #8A9E8D; }
+    .dark .text-primary { color: #6BA882; }
+    .dark .text-primary-dark { color: #6BA882; }
+    .dark .text-danger { color: #E05C4B; }
+    .dark .text-success { color: #4CAF7D; }
+    .dark .text-accent { color: #D4A853; }
+    .dark .bg-bg { background-color: #0F1410; }
+    .dark .bg-white { background-color: #1A1F1B; }
+    .dark .bg-surface { background-color: #1A1F1B; }
+    .dark .bg-primary-light { background-color: #1A2E23; }
+    .dark .bg-primary { background-color: #6BA882; }
+    .dark .bg-primary:hover, .dark .hover\:bg-primary-dark:hover { background-color: #5C8B6E; }
+    .dark .border-bordered { border-color: #2A332C; }
+    .dark .border-primary { border-color: #6BA882; }
+    .dark code { color: inherit; background-color: transparent; }
+
+    /* smooth theme transition */
+    html, body, aside, header, main, section, article, nav,
+    .card, .card-white, .input, .nav-link, .badge-success, .badge-danger,
+    .badge-warning, .badge-info, .btn-primary, .btn-secondary, .btn-danger,
+    table, th, td {
+        transition: background-color 0.3s ease, color 0.2s ease, border-color 0.2s ease;
     }
 }
 
@@ -26,55 +78,117 @@
     .btn-secondary {
         @apply inline-flex items-center justify-center gap-2 px-5 py-2.5 min-h-[44px] rounded-xl bg-transparent border border-primary text-primary font-medium hover:bg-primary-light transition-colors;
     }
+    .dark .btn-secondary {
+        border-color: #6BA882;
+        color: #6BA882;
+    }
+    .dark .btn-secondary:hover {
+        background-color: #1A2E23;
+    }
     .btn-danger {
-        @apply inline-flex items-center justify-center gap-2 px-4 py-2 min-h-[40px] rounded-xl bg-danger text-white font-medium hover:opacity-90 transition;
+        @apply inline-flex items-center justify-center gap-2 px-4 py-2 min-h-[44px] rounded-xl bg-danger text-white font-medium transition-colors;
+    }
+    .btn-danger:hover {
+        background-color: #A93226;
+    }
+    .dark .btn-danger {
+        background-color: #E05C4B;
+    }
+    .dark .btn-danger:hover {
+        background-color: #C0392B;
     }
     .card {
         @apply bg-surface border border-bordered rounded-2xl p-5 sm:p-6 shadow-soft;
     }
+    .dark .card {
+        background-color: #1A1F1B;
+        border-color: #2A332C;
+    }
     .card-white {
         @apply bg-white border border-bordered rounded-2xl p-5 sm:p-6 shadow-soft;
+    }
+    .dark .card-white {
+        background-color: #1A1F1B;
+        border-color: #2A332C;
     }
     .input {
         @apply w-full px-4 py-2.5 min-h-[44px] bg-white border border-bordered rounded-xl text-ink focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition;
     }
+    .dark .input {
+        background-color: #0F1410;
+        border-color: #2A332C;
+        color: #E8EDE9;
+    }
+    .dark .input::placeholder { color: #8A9E8D; }
     .label {
         @apply block text-sm font-medium text-ink mb-1.5;
     }
+    .dark .label { color: #E8EDE9; }
     .badge-success {
         @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold;
         background-color: #D5F0E0;
         color: #1E7A45;
+    }
+    .dark .badge-success {
+        background-color: #1A3D2A;
+        color: #8FE4B0;
     }
     .badge-danger {
         @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold;
         background-color: #FADADD;
         color: #922B21;
     }
+    .dark .badge-danger {
+        background-color: #3D1A1F;
+        color: #F0A0A0;
+    }
     .badge-warning {
         @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold;
         background-color: #FDF3DC;
         color: #8A6620;
+    }
+    .dark .badge-warning {
+        background-color: #3D3320;
+        color: #E8C778;
     }
     .badge-info {
         @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold;
         background-color: #EBF2ED;
         color: #4A7259;
     }
+    .dark .badge-info {
+        background-color: #1A2E23;
+        color: #8FB89C;
+    }
     .nav-link {
         @apply flex items-center gap-3 px-4 py-2.5 rounded-xl text-muted hover:bg-primary-light hover:text-primary-dark transition-colors text-sm font-medium;
     }
+    .dark .nav-link { color: #8A9E8D; }
+    .dark .nav-link:hover { background-color: #1A2E23; color: #6BA882; }
     .nav-link-active {
         @apply bg-primary text-white hover:bg-primary-dark hover:text-white;
     }
+    .dark .nav-link-active { background-color: #5C8B6E; color: #FFFFFF; }
+    .dark .nav-link-active:hover { background-color: #4A7259; color: #FFFFFF; }
     .table-base {
         @apply w-full text-sm text-left;
     }
     .table-base th {
         @apply px-4 py-3 bg-primary-light text-primary-dark font-semibold text-xs uppercase tracking-wide whitespace-nowrap;
     }
+    .dark .table-base th {
+        background-color: #1A2E23;
+        color: #8FB89C;
+    }
     .table-base td {
         @apply px-4 py-3 border-t border-bordered text-ink;
+    }
+    .dark .table-base td {
+        border-top-color: #2A332C;
+        color: #E8EDE9;
+    }
+    .dark .table-base tbody tr:hover td {
+        background-color: #1A2E23;
     }
     .star-rating input { display: none; }
     .star-rating label {
@@ -84,6 +198,7 @@
         line-height: 1;
         padding: 4px 2px;
     }
+    .dark .star-rating label { color: #2A332C; }
     .star-rating label:hover,
     .star-rating label:hover ~ label,
     .star-rating input:checked ~ label {
@@ -101,5 +216,150 @@
 @media (min-width: 640px) {
     .chart-wrap {
         height: 320px;
+    }
+}
+
+.print-header,
+.print-footer {
+    display: none;
+}
+
+@media print {
+    html.dark {
+        background: white !important;
+        color: black !important;
+    }
+    html.dark body,
+    html.dark .card,
+    html.dark .card-white,
+    html.dark aside,
+    html.dark header,
+    html.dark main {
+        background: white !important;
+        color: black !important;
+        border-color: #ccc !important;
+    }
+    html.dark th, html.dark td, html.dark p, html.dark span,
+    html.dark h1, html.dark h2, html.dark h3, html.dark h4, html.dark dt, html.dark dd {
+        color: black !important;
+    }
+
+    aside,
+    #app-sidebar,
+    header,
+    nav,
+    .navbar,
+    .btn-primary,
+    .btn-secondary,
+    .btn-danger,
+    button,
+    form .btn-primary,
+    .no-print,
+    #notif-wrapper,
+    #dark-mode-toggle,
+    #sidebar-overlay,
+    #deleteModal {
+        display: none !important;
+    }
+
+    body,
+    .card,
+    .card-white {
+        background: white !important;
+        color: black !important;
+        box-shadow: none !important;
+        border: none !important;
+        padding: 0 !important;
+    }
+
+    main {
+        max-width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    .print-header {
+        display: block !important;
+        text-align: center;
+        margin-bottom: 1.5rem;
+        border-bottom: 2px solid #5C8B6E;
+        padding-bottom: 1rem;
+    }
+    .print-header h1 {
+        font-size: 18pt;
+        margin: 0 0 0.25rem 0;
+        color: #5C8B6E !important;
+    }
+    .print-header p {
+        font-size: 11pt;
+        margin: 0.15rem 0;
+        color: #444 !important;
+    }
+
+    table {
+        width: 100% !important;
+        border-collapse: collapse !important;
+        font-size: 12px !important;
+        page-break-inside: auto;
+    }
+    tr { page-break-inside: avoid; page-break-after: auto; }
+
+    th, td {
+        border: 1px solid #ccc !important;
+        padding: 6px 8px !important;
+        color: black !important;
+    }
+
+    th {
+        background: #5C8B6E !important;
+        color: white !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+
+    .badge-success {
+        border: 1px solid #27AE60 !important;
+        background: transparent !important;
+        color: #27AE60 !important;
+    }
+    .badge-danger {
+        border: 1px solid #C0392B !important;
+        background: transparent !important;
+        color: #C0392B !important;
+    }
+    .badge-warning {
+        border: 1px solid #D4A853 !important;
+        background: transparent !important;
+        color: #8A6620 !important;
+    }
+    .badge-info {
+        border: 1px solid #7A7670 !important;
+        background: transparent !important;
+        color: #4A7259 !important;
+    }
+
+    .chart-wrap,
+    canvas {
+        display: none !important;
+    }
+
+    .page-break {
+        page-break-before: always;
+    }
+
+    .print-footer {
+        display: block !important;
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        text-align: center;
+        font-size: 11px;
+        color: #666 !important;
+        border-top: 1px solid #ccc;
+        padding-top: 0.5rem;
+    }
+
+    @page {
+        margin: 1.5cm;
     }
 }

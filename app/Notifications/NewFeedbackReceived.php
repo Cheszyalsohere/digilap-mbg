@@ -26,7 +26,8 @@ class NewFeedbackReceived extends Notification
             'siswa_name'  => $this->feedback->user?->name,
             'rating'      => $this->feedback->rating,
             'komentar'    => $this->feedback->komentar,
-            'message'     => "Feedback baru dari {$this->feedback->user?->name} (rating {$this->feedback->rating}/5)",
+            'message'     => "{$this->feedback->user?->name} mengirim feedback baru — rating {$this->feedback->rating}★",
+            'url'         => '/sppg/laporan',
         ];
     }
 }

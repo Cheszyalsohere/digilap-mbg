@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Concerns\LogsActivity;
 use App\Http\Controllers\Controller;
 use App\Models\Sppg;
 use App\Models\User;
@@ -13,6 +14,8 @@ use Illuminate\View\View;
 
 class AdminUserController extends Controller
 {
+    use LogsActivity;
+
     public function index(Request $request): View
     {
         $query = User::with('sppg')->latest('id');
@@ -64,6 +67,12 @@ class AdminUserController extends Controller
         $user->username = User::generateUsername($user->name, $user->sekolah);
         $user->save();
 
+        $this->logActivity(
+            "Membuat akun {$user->role} — {$user->username}",
+            "Nama: {$user->name}, Email: {$user->email}",
+            $user
+        );
+
         return redirect()->route('admin.users.index')
             ->with('success', "User dibuat. Username: {$user->username}");
     }
@@ -88,10 +97,15 @@ class AdminUserController extends Controller
         $user->email   = $data['email'];
         $user->sekolah = $user->isSiswa() ? $data['sekolah'] : null;
         $user->sppg_id = in_array($user->role, ['siswa', 'sppg']) ? ($data['sppg_id'] ?? null) : null;
-        if (! empty($data['password'])) {
+        $passwordReset = ! empty($data['password']);
+        if ($passwordReset) {
             $user->password = $data['password'];
         }
         $user->save();
+
+        if ($passwordReset) {
+            $this->logActivity("Mereset password {$user->username}", null, $user);
+        }
 
         return redirect()->route('admin.users.index')->with('success', 'User diperbarui.');
     }
@@ -101,7 +115,11 @@ class AdminUserController extends Controller
         if ($user->id === auth()->id()) {
             return back()->with('error', 'Tidak bisa menghapus akun sendiri.');
         }
+        $username = $user->username;
         $user->delete();
+
+        $this->logActivity("Menghapus akun {$username}");
+
         return redirect()->route('admin.users.index')->with('success', 'User dihapus.');
     }
 

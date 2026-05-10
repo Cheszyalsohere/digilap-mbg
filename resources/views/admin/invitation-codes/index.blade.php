@@ -54,11 +54,11 @@
                                             {{ $c->is_active ? 'Nonaktifkan' : 'Aktifkan' }}
                                         </button>
                                     </form>
-                                    <form action="{{ route('admin.invitation-codes.destroy', $c) }}" method="POST" class="inline"
-                                          onsubmit="return confirm('Hapus kode {{ $c->code }}?')">
-                                        @csrf @method('DELETE')
-                                        <button class="text-danger text-sm hover:underline ml-2">Hapus</button>
-                                    </form>
+                                    <button type="button"
+                                            class="text-danger text-sm hover:underline ml-2"
+                                            onclick="confirmDelete('{{ route('admin.invitation-codes.destroy', $c) }}', 'Hapus kode {{ $c->code }}? Siswa yang belum daftar tidak bisa gunakan kode ini lagi.')">
+                                        Hapus
+                                    </button>
                                 </td>
                             </tr>
                         @endforeach

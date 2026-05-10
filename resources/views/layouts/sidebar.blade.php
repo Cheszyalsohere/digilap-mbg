@@ -4,9 +4,9 @@
 @endphp
 
 <aside id="app-sidebar"
-       class="fixed lg:sticky top-0 left-0 z-40 w-60 bg-white border-r border-bordered h-screen shrink-0
+       class="fixed lg:sticky top-0 left-0 z-40 w-60 bg-white dark:bg-[#1A1F1B] border-r border-bordered dark:border-[#2A332C] h-screen shrink-0
               flex flex-col transform -translate-x-full lg:translate-x-0 transition-transform duration-200">
-    <div class="px-6 py-5 border-b border-bordered flex items-center justify-between">
+    <div class="px-6 py-5 border-b border-bordered dark:border-[#2A332C] flex items-center justify-between">
         <a href="/" class="flex items-center gap-2">
             <div class="w-9 h-9 rounded-xl bg-primary flex items-center justify-center text-white font-bold">D</div>
             <div>
@@ -70,6 +70,10 @@
             <a href="{{ route('admin.invitation-codes.index') }}"
                class="nav-link {{ request()->routeIs('admin.invitation-codes.*') ? 'nav-link-active' : '' }}">
                 <span>Kode Undangan</span>
+            </a>
+            <a href="{{ route('admin.activity-logs') }}"
+               class="nav-link {{ request()->routeIs('admin.activity-logs') ? 'nav-link-active' : '' }}">
+                <span>Log Aktivitas</span>
             </a>
         @endif
 

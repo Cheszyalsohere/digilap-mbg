@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Chat;
 use App\Models\User;
+use App\Notifications\NewChatMessage;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -68,11 +69,13 @@ class ChatController extends Controller
             'message' => ['required', 'string', 'max:2000'],
         ]);
 
-        Chat::create([
+        $chat = Chat::create([
             'sender_id'   => $me->id,
             'receiver_id' => $user->id,
             'message'     => $data['message'],
         ]);
+
+        $user->notify(new NewChatMessage($chat, $me->name));
 
         return redirect()->route('chat.show', $user);
     }

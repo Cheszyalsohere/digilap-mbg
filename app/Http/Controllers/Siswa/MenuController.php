@@ -12,11 +12,18 @@ class MenuController extends Controller
     public function index(Request $request): View
     {
         $user = $request->user();
+        $user->loadMissing('allergies');
+
         $menuToday = Menu::with('sppg')
             ->where('sppg_id', $user->sppg_id)
             ->whereDate('tanggal', today())
             ->first();
 
-        return view('siswa.menu', compact('menuToday'));
+        $menuView = null;
+        if ($menuToday) {
+            $menuView = $menuToday->getMenuForUser($user);
+        }
+
+        return view('siswa.menu', compact('menuToday', 'menuView'));
     }
 }

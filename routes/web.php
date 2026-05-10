@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AboutController;
+use App\Http\Controllers\Admin\AdminActivityLogController;
 use App\Http\Controllers\Admin\AdminAnalisisController;
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\AdminInvitationCodeController;
@@ -8,6 +9,7 @@ use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\ChatController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Siswa\FeedbackController;
 use App\Http\Controllers\Siswa\MenuController as SiswaMenuController;
@@ -54,16 +56,20 @@ Route::middleware(['auth', 'role:sppg'])->prefix('sppg')->name('sppg.')->group(f
     Route::get('/menu/{menu}/edit', [SppgMenuController::class, 'edit'])->name('menu.edit');
     Route::put('/menu/{menu}', [SppgMenuController::class, 'update'])->name('menu.update');
     Route::get('/laporan', [SppgLaporanController::class, 'index'])->name('laporan');
+    Route::get('/laporan/export-pdf', [SppgLaporanController::class, 'exportPdf'])->name('laporan.export-pdf');
 });
 
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
     Route::get('/analisis', [AdminAnalisisController::class, 'index'])->name('analisis');
+    Route::get('/analisis/export-pdf', [AdminAnalisisController::class, 'exportPdf'])->name('analisis.export-pdf');
     Route::get('/export', [AdminAnalisisController::class, 'export'])->name('export');
+    Route::get('/laporan/export-pdf', [AdminAnalisisController::class, 'exportLaporanPdf'])->name('laporan.export-pdf');
     Route::resource('users', AdminUserController::class);
     Route::resource('invitation-codes', AdminInvitationCodeController::class)
         ->parameters(['invitation-codes' => 'invitation_code'])
         ->except(['show', 'edit']);
+    Route::get('/activity-logs', [AdminActivityLogController::class, 'index'])->name('activity-logs');
 });
 
 Route::middleware('auth')->group(function () {
@@ -72,4 +78,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/chat/{user}', [ChatController::class, 'store'])->name('chat.store');
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::get('/notifications/unread-count', [NotificationController::class, 'unreadCount'])->name('notifications.unread-count');
+    Route::post('/notifications/{id}/read', [NotificationController::class, 'markAsRead'])->name('notifications.read');
+    Route::post('/notifications/read-all', [NotificationController::class, 'markAllAsRead'])->name('notifications.read-all');
 });

@@ -5,10 +5,17 @@
 @section('content')
     <div class="card-white max-w-2xl">
         <h2 class="text-lg sm:text-xl font-semibold mb-1">Beri Feedback untuk Menu Hari Ini</h2>
-        <p class="text-sm text-muted mb-5">{{ now()->translatedFormat('l, d F Y') }} &middot; {{ $menu->sppg?->name }}</p>
+        <p class="text-sm text-muted mb-3">{{ now()->translatedFormat('l, d F Y') }} &middot; {{ $menu->sppg?->name }}</p>
+
+        @if ($menuView['is_alternatif'])
+            <div class="mb-4 px-3 py-2 rounded-lg bg-primary-light dark:bg-[#1A2E23] border-l-4 border-primary text-xs text-primary-dark dark:text-[#8FB89C] flex items-center gap-1.5">
+                <span aria-hidden="true">🌿</span>
+                Kamu memberikan feedback untuk menu alternatif.
+            </div>
+        @endif
 
         <div class="grid grid-cols-2 sm:grid-cols-5 gap-2 mb-6">
-            @foreach ($menu->slots() as $label => $isi)
+            @foreach ($menuView['slots'] as $label => $isi)
                 <div class="p-3 rounded-xl bg-primary-light text-center">
                     <p class="text-[10px] uppercase text-primary-dark font-semibold">{{ $label }}</p>
                     <p class="text-xs text-ink mt-1">{{ $isi }}</p>

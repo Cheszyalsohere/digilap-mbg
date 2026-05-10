@@ -62,8 +62,62 @@
                         <input type="password" name="password_confirmation" class="input">
                     </div>
                 </div>
+
+                @if ($user->isSiswa())
+                    <div class="pt-4 border-t border-bordered dark:border-[#2A332C]">
+                        <label class="label flex items-center gap-2">
+                            <span aria-hidden="true">🥜</span>
+                            <span>Informasi Alergi</span>
+                        </label>
+                        <p class="text-xs text-muted mb-3">
+                            Centang alergi yang kamu miliki. SPPG akan menggunakan info ini untuk menyiapkan menu alternatif.
+                        </p>
+                        <div class="space-y-2">
+                            @foreach ($allergies as $allergy)
+                                @php
+                                    $checked = collect(old('allergies', $userAllergyIds))->contains($allergy->id);
+                                    $isLainnya = $allergy->slug === 'lainnya';
+                                @endphp
+                                <label class="flex items-start gap-2 text-sm">
+                                    <input type="checkbox" name="allergies[]" value="{{ $allergy->id }}"
+                                           @if ($isLainnya) data-allergy-lainnya @endif
+                                           {{ $checked ? 'checked' : '' }}
+                                           class="mt-0.5 rounded border-bordered text-primary focus:ring-primary">
+                                    <span>{{ $allergy->name }}</span>
+                                </label>
+                                @if ($isLainnya)
+                                    <div id="allergy-lainnya-wrap" class="{{ $checked ? '' : 'hidden' }} pl-6">
+                                        <input type="text" name="allergy_lainnya"
+                                               value="{{ old('allergy_lainnya', $userAllergyLainnya) }}"
+                                               maxlength="255"
+                                               placeholder="Tuliskan jenis alergimu"
+                                               class="input">
+                                    </div>
+                                @endif
+                            @endforeach
+                        </div>
+                    </div>
+                @endif
+
                 <button type="submit" class="btn-primary w-full sm:w-auto">Simpan Perubahan</button>
             </form>
         </div>
     </div>
+
+    @if ($user->isSiswa())
+        <script>
+            (function () {
+                const cb = document.querySelector('[data-allergy-lainnya]');
+                const wrap = document.getElementById('allergy-lainnya-wrap');
+                if (!cb || !wrap) return;
+                cb.addEventListener('change', () => {
+                    wrap.classList.toggle('hidden', !cb.checked);
+                    if (!cb.checked) {
+                        const input = wrap.querySelector('input');
+                        if (input) input.value = '';
+                    }
+                });
+            })();
+        </script>
+    @endif
 @endsection

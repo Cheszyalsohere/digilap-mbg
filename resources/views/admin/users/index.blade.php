@@ -42,11 +42,11 @@
                             <td>{{ $u->sppg?->name ?? '—' }}</td>
                             <td class="text-right whitespace-nowrap">
                                 <a href="{{ route('admin.users.edit', $u) }}" class="text-primary text-sm hover:underline">Edit</a>
-                                <form action="{{ route('admin.users.destroy', $u) }}" method="POST" class="inline"
-                                      onsubmit="return confirm('Hapus user ini?')">
-                                    @csrf @method('DELETE')
-                                    <button class="text-danger text-sm hover:underline ml-2">Hapus</button>
-                                </form>
+                                <button type="button"
+                                        class="text-danger text-sm hover:underline ml-2"
+                                        onclick="confirmDelete('{{ route('admin.users.destroy', $u) }}', 'Hapus akun {{ $u->name }} ({{ $u->username }})? Data feedback terkait akan ikut terhapus.')">
+                                    Hapus
+                                </button>
                             </td>
                         </tr>
                     @endforeach

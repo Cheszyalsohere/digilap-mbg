@@ -4,6 +4,17 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Daftar - DIGILAP MBG</title>
+    <script>
+        (function () {
+            try {
+                var pref = localStorage.getItem('darkMode');
+                var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+                if (pref === 'true' || (pref === null && prefersDark)) {
+                    document.documentElement.classList.add('dark');
+                }
+            } catch (_) { /* ignore */ }
+        })();
+    </script>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="min-h-screen bg-bg flex items-center justify-center px-4 py-10">
@@ -53,8 +64,57 @@
                            class="input">
                 </div>
 
+                <div class="pt-3 border-t border-bordered dark:border-[#2A332C]">
+                    <label class="label flex items-center gap-2">
+                        <span aria-hidden="true">🥜</span>
+                        <span>Informasi Alergi <span class="font-normal text-muted">(Opsional)</span></span>
+                    </label>
+                    <p class="text-xs text-muted mb-3">
+                        Centang jika kamu memiliki alergi makanan. Informasi ini membantu SPPG menyiapkan menu yang aman untukmu.
+                    </p>
+                    <div class="space-y-2">
+                        @foreach ($allergies as $allergy)
+                            @php
+                                $checked = collect(old('allergies', []))->contains($allergy->id);
+                                $isLainnya = $allergy->slug === 'lainnya';
+                            @endphp
+                            <label class="flex items-start gap-2 text-sm">
+                                <input type="checkbox" name="allergies[]" value="{{ $allergy->id }}"
+                                       @if ($isLainnya) data-allergy-lainnya @endif
+                                       {{ $checked ? 'checked' : '' }}
+                                       class="mt-0.5 rounded border-bordered text-primary focus:ring-primary">
+                                <span>{{ $allergy->name }}</span>
+                            </label>
+                            @if ($isLainnya)
+                                <div id="allergy-lainnya-wrap" class="{{ $checked ? '' : 'hidden' }} pl-6">
+                                    <input type="text" name="allergy_lainnya"
+                                           value="{{ old('allergy_lainnya') }}"
+                                           maxlength="255"
+                                           placeholder="Tuliskan jenis alergimu"
+                                           class="input">
+                                </div>
+                            @endif
+                        @endforeach
+                    </div>
+                </div>
+
                 <button type="submit" class="btn-primary w-full justify-center">Daftar</button>
             </form>
+
+            <script>
+                (function () {
+                    const cb = document.querySelector('[data-allergy-lainnya]');
+                    const wrap = document.getElementById('allergy-lainnya-wrap');
+                    if (!cb || !wrap) return;
+                    cb.addEventListener('change', () => {
+                        wrap.classList.toggle('hidden', !cb.checked);
+                        if (!cb.checked) {
+                            const input = wrap.querySelector('input');
+                            if (input) input.value = '';
+                        }
+                    });
+                })();
+            </script>
         </div>
 
         <p class="text-center text-sm text-muted mt-6">

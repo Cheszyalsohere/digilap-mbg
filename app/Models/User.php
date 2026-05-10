@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -53,6 +54,29 @@ class User extends Authenticatable
     public function receivedChats(): HasMany
     {
         return $this->hasMany(Chat::class, 'receiver_id');
+    }
+
+    public function allergies(): BelongsToMany
+    {
+        return $this->belongsToMany(Allergy::class, 'user_allergies')
+            ->withPivot('catatan')
+            ->withTimestamps();
+    }
+
+    public function hasAllergy(): bool
+    {
+        return $this->allergies()->exists();
+    }
+
+    public function allergyNames(): string
+    {
+        return $this->allergies->map(function ($a) {
+            $note = $a->pivot->catatan ?? null;
+            if ($a->slug === 'lainnya' && $note) {
+                return $a->name . ' (' . $note . ')';
+            }
+            return $a->name;
+        })->implode(', ');
     }
 
     public function isSiswa(): bool

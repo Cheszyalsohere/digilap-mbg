@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Concerns\LogsActivity;
 use App\Http\Controllers\Controller;
 use App\Models\InvitationCode;
 use App\Models\Sppg;
@@ -12,6 +13,8 @@ use Illuminate\View\View;
 
 class AdminInvitationCodeController extends Controller
 {
+    use LogsActivity;
+
     private const SEKOLAH_TO_SPPG = [
         'SMANBA'   => 'SPPG Kalirejo',
         'NESABA'   => 'SPPG Rembang',
@@ -52,6 +55,12 @@ class AdminInvitationCodeController extends Controller
             'expires_at' => $data['expires_at'] ?? null,
         ]);
 
+        $this->logActivity(
+            "Membuat kode undangan {$code->code} untuk {$code->sekolah}",
+            null,
+            $code
+        );
+
         return redirect()->route('admin.invitation-codes.index')
             ->with('success', "Kode undangan dibuat: {$code->code}");
     }
@@ -59,6 +68,12 @@ class AdminInvitationCodeController extends Controller
     public function update(Request $request, InvitationCode $invitation_code): RedirectResponse
     {
         $invitation_code->update(['is_active' => ! $invitation_code->is_active]);
+
+        if (! $invitation_code->is_active) {
+            $this->logActivity("Menonaktifkan kode {$invitation_code->code}", null, $invitation_code);
+        } else {
+            $this->logActivity("Mengaktifkan kembali kode {$invitation_code->code}", null, $invitation_code);
+        }
 
         $status = $invitation_code->is_active ? 'diaktifkan' : 'dinonaktifkan';
         return back()->with('success', "Kode {$invitation_code->code} {$status}.");
@@ -68,6 +83,9 @@ class AdminInvitationCodeController extends Controller
     {
         $code = $invitation_code->code;
         $invitation_code->delete();
+
+        $this->logActivity("Menghapus kode {$code}");
+
         return back()->with('success', "Kode {$code} dihapus.");
     }
 }
