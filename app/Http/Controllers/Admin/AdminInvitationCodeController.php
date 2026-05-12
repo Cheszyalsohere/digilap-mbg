@@ -16,9 +16,9 @@ class AdminInvitationCodeController extends Controller
     use LogsActivity;
 
     private const SEKOLAH_TO_SPPG = [
-        'SMANBA'   => 'SPPG Kalirejo',
-        'NESABA'   => 'SPPG Rembang',
-        'MANSAPAS' => 'SPPG Bangil',
+        'SMANBA'   => 'SPPG Kalianyar',
+        'NESABA'   => 'SPPG Gempeng',
+        'MANSAPAS' => 'SPPG Gajahbendo',
     ];
 
     public function index(): View

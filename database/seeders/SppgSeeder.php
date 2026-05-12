@@ -10,9 +10,9 @@ class SppgSeeder extends Seeder
     public function run(): void
     {
         $data = [
-            ['name' => 'SPPG Kalirejo', 'lokasi' => 'Kalirejo, Lampung Tengah'],
-            ['name' => 'SPPG Rembang',  'lokasi' => 'Rembang, Pasuruan'],
-            ['name' => 'SPPG Bangil',   'lokasi' => 'Bangil, Pasuruan'],
+            ['name' => 'SPPG Kalianyar',   'lokasi' => 'Kalianyar, Bangil, Pasuruan'],
+            ['name' => 'SPPG Gempeng',     'lokasi' => 'Gempeng, Bangil, Pasuruan'],
+            ['name' => 'SPPG Gajahbendo',  'lokasi' => 'Gajahbendo, Beji, Pasuruan'],
         ];
 
         foreach ($data as $row) {

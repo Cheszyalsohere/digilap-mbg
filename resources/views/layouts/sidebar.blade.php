@@ -6,13 +6,11 @@
 <aside id="app-sidebar"
        class="fixed lg:sticky top-0 left-0 z-40 w-60 bg-white dark:bg-[#1A1F1B] border-r border-bordered dark:border-[#2A332C] h-screen shrink-0
               flex flex-col transform -translate-x-full lg:translate-x-0 transition-transform duration-200">
-    <div class="px-6 py-5 border-b border-bordered dark:border-[#2A332C] flex items-center justify-between">
-        <a href="/" class="flex items-center gap-2">
-            <div class="w-9 h-9 rounded-xl bg-primary flex items-center justify-center text-white font-bold">D</div>
-            <div>
-                <div class="font-bold text-ink leading-none">DIGILAP</div>
-                <div class="text-[11px] text-muted leading-none mt-0.5">MBG Monitoring</div>
-            </div>
+    <div class="px-3 py-3 border-b border-bordered dark:border-[#2A332C] flex items-center justify-between">
+        <a href="/" class="flex items-center bg-white rounded-lg p-1">
+            <img src="{{ asset('images/logo-digilap.png') }}"
+                 alt="DIGILAP MBG"
+                 style="height: 80px; width: auto;">
         </a>
         <button id="sidebar-close" type="button"
                 class="lg:hidden p-2 -mr-2 rounded-lg hover:bg-primary-light text-muted hover:text-ink"

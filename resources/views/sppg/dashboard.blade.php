@@ -40,12 +40,13 @@
                     Edit Menu
                 </a>
             </div>
-            <div class="grid grid-cols-2 sm:grid-cols-5 gap-2">
-                @foreach ($menuToday->slots() as $label => $isi)
-                    <div class="p-3 rounded-xl bg-primary-light text-center">
-                        <p class="text-[10px] uppercase text-primary-dark font-semibold">{{ $label }}</p>
-                        <p class="text-xs text-ink mt-1">{{ $isi }}</p>
-                    </div>
+            <div class="grid grid-cols-2 gap-3">
+                @foreach ($menuToday->slots() as $isi)
+                    @if ($isi)
+                        <div class="bg-primary-light rounded-xl px-4 py-3 text-sm font-medium text-center border border-primary text-primary-dark dark:bg-[#1A2E23] dark:border-[#2A332C] dark:text-[#6BA882]">
+                            {{ $isi }}
+                        </div>
+                    @endif
                 @endforeach
             </div>
         </div>

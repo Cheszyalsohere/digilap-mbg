@@ -15,7 +15,16 @@
                 </select>
                 <button class="btn-primary w-full sm:w-auto">Cari</button>
             </form>
-            <a href="{{ route('admin.users.create') }}" class="btn-primary w-full lg:w-auto">+ Tambah User</a>
+            <div class="flex flex-col sm:flex-row gap-2 w-full lg:w-auto">
+                <a href="{{ route('admin.users.export-csv') }}"
+                   class="btn-secondary w-full sm:w-auto inline-flex items-center justify-center gap-1.5">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                    </svg>
+                    Export Siswa (CSV)
+                </a>
+                <a href="{{ route('admin.users.create') }}" class="btn-primary w-full sm:w-auto">+ Tambah User</a>
+            </div>
         </div>
 
         <div class="overflow-x-auto -mx-5 sm:mx-0 px-5 sm:px-0">

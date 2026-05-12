@@ -39,6 +39,7 @@ Route::middleware('guest')->group(function () {
     Route::post('/register', [RegisterController::class, 'store']);
 });
 
+Route::get('/logout', fn () => redirect('/login'));
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth')->name('logout');
 
 Route::middleware(['auth', 'role:siswa'])->name('siswa.')->group(function () {
@@ -65,6 +66,7 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::get('/analisis/export-pdf', [AdminAnalisisController::class, 'exportPdf'])->name('analisis.export-pdf');
     Route::get('/export', [AdminAnalisisController::class, 'export'])->name('export');
     Route::get('/laporan/export-pdf', [AdminAnalisisController::class, 'exportLaporanPdf'])->name('laporan.export-pdf');
+    Route::get('/users/export-csv', [AdminUserController::class, 'exportCsv'])->name('users.export-csv');
     Route::resource('users', AdminUserController::class);
     Route::resource('invitation-codes', AdminInvitationCodeController::class)
         ->parameters(['invitation-codes' => 'invitation_code'])

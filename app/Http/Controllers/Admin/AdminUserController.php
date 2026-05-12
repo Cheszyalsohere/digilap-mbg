@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 use Illuminate\View\View;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class AdminUserController extends Controller
 {
@@ -126,5 +127,54 @@ class AdminUserController extends Controller
     public function show(User $user): RedirectResponse
     {
         return redirect()->route('admin.users.edit', $user);
+    }
+
+    public function exportCsv(): StreamedResponse
+    {
+        $siswa = User::with(['sppg', 'allergies'])
+            ->where('role', 'siswa')
+            ->orderBy('name')
+            ->get();
+
+        $filename = 'data-siswa-digilap-' . now()->format('Y-m-d') . '.csv';
+
+        $headers = [
+            'Content-Type'        => 'text/csv; charset=UTF-8',
+            'Content-Disposition' => 'attachment; filename="' . $filename . '"',
+        ];
+
+        $callback = function () use ($siswa) {
+            $file = fopen('php://output', 'w');
+            fwrite($file, "\xEF\xBB\xBF");
+
+            fputcsv($file, [
+                'No', 'Nama', 'Username', 'Email',
+                'Sekolah', 'SPPG', 'Alergi',
+                'Catatan Alergi', 'Tanggal Daftar',
+            ]);
+
+            foreach ($siswa as $i => $s) {
+                $catatan = optional($s->allergies->where('slug', 'lainnya')->first())
+                    ->pivot?->catatan;
+
+                fputcsv($file, [
+                    $i + 1,
+                    $s->name,
+                    $s->username,
+                    $s->email ?? '-',
+                    $s->sekolah ?? '-',
+                    $s->sppg?->name ?? '-',
+                    $s->allergies->pluck('name')->join(', ') ?: '-',
+                    $catatan ?: '-',
+                    $s->created_at?->format('d/m/Y') ?? '-',
+                ]);
+            }
+
+            fclose($file);
+        };
+
+        $this->logActivity("Mengekspor data siswa ke CSV ({$siswa->count()} baris)");
+
+        return response()->stream($callback, 200, $headers);
     }
 }

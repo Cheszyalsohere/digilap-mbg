@@ -10,6 +10,7 @@ use App\Models\User;
 use App\Notifications\NewFeedbackReceived;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\View\View;
 
@@ -77,8 +78,22 @@ class FeedbackController extends Controller
         }
 
         $fotoPath = null;
-        if ($request->hasFile('foto')) {
-            $fotoPath = $request->file('foto')->store('feedbacks', 'public');
+        if ($request->hasFile('foto') && $request->file('foto')->isValid()) {
+            try {
+                $fotoPath = $request->file('foto')->store('feedbacks', 'public');
+                if (! $fotoPath) {
+                    throw new \RuntimeException('store() mengembalikan path kosong.');
+                }
+            } catch (\Throwable $e) {
+                Log::error('Upload foto feedback gagal: ' . $e->getMessage(), [
+                    'user_id'   => $user->id,
+                    'menu_id'   => $menu->id,
+                    'exception' => $e,
+                ]);
+                return back()
+                    ->withInput()
+                    ->withErrors(['foto' => 'Gagal mengunggah foto. Coba lagi dengan file lain.']);
+            }
         }
 
         $feedback = Feedback::create([

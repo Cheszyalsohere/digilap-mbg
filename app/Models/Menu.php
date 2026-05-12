@@ -38,22 +38,22 @@ class Menu extends Model
     public function slots(): array
     {
         return [
-            'Nasi'           => $this->slot_1,
-            'Buah'           => $this->slot_2,
-            'Protein Nabati' => $this->slot_3,
-            'Protein Hewani' => $this->slot_4,
-            'Susu'           => $this->slot_5,
+            'Slot 1' => $this->slot_1,
+            'Slot 2' => $this->slot_2,
+            'Slot 3' => $this->slot_3,
+            'Slot 4' => $this->slot_4,
+            'Slot 5' => $this->slot_5,
         ];
     }
 
     public function altSlots(): array
     {
         return [
-            'Nasi'           => $this->alt_slot_1 ?: $this->slot_1,
-            'Buah'           => $this->alt_slot_2 ?: $this->slot_2,
-            'Protein Nabati' => $this->alt_slot_3 ?: $this->slot_3,
-            'Protein Hewani' => $this->alt_slot_4 ?: $this->slot_4,
-            'Susu'           => $this->alt_slot_5 ?: $this->slot_5,
+            'Slot 1' => $this->alt_slot_1 ?: $this->slot_1,
+            'Slot 2' => $this->alt_slot_2 ?: $this->slot_2,
+            'Slot 3' => $this->alt_slot_3 ?: $this->slot_3,
+            'Slot 4' => $this->alt_slot_4 ?: $this->slot_4,
+            'Slot 5' => $this->alt_slot_5 ?: $this->slot_5,
         ];
     }
 

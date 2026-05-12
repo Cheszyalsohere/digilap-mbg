@@ -3,6 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/png" href="{{ asset('images/logo-digilap.png') }}">
     <title>Login - DIGILAP MBG</title>
     <script>
         (function () {
@@ -20,8 +21,10 @@
 <body class="min-h-screen bg-bg flex items-center justify-center px-4 py-8">
     <div class="w-full max-w-md">
         <div class="text-center mb-8">
-            <div class="w-14 h-14 mx-auto rounded-2xl bg-primary flex items-center justify-center text-white text-2xl font-bold mb-3">D</div>
-            <h1 class="text-2xl font-bold text-ink">DIGILAP MBG</h1>
+            <img src="{{ asset('images/logo-digilap.png') }}"
+                 alt="DIGILAP MBG"
+                 class="mx-auto mb-4"
+                 style="height: 200px; width: auto;">
             <p class="text-sm text-muted mt-1">Digitalisasi Laporan Makan Bergizi Gratis</p>
         </div>
 

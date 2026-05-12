@@ -54,12 +54,13 @@
                     <p class="text-xs font-medium">Foto menu belum tersedia</p>
                 </div>
             @endif
-            <div class="grid sm:grid-cols-2 gap-3">
-                @foreach ($menuView['slots'] as $label => $isi)
-                    <div class="p-4 rounded-xl bg-primary-light">
-                        <p class="text-[11px] uppercase text-primary-dark tracking-wide font-semibold">{{ $label }}</p>
-                        <p class="text-sm text-ink mt-1">{{ $isi }}</p>
-                    </div>
+            <div class="grid grid-cols-2 gap-3">
+                @foreach ($menuView['slots'] as $isi)
+                    @if ($isi)
+                        <div class="bg-primary-light rounded-xl px-4 py-3 text-sm font-medium text-center border border-primary text-primary-dark dark:bg-[#1A2E23] dark:border-[#2A332C] dark:text-[#6BA882]">
+                            {{ $isi }}
+                        </div>
+                    @endif
                 @endforeach
             </div>
             <div class="mt-6">

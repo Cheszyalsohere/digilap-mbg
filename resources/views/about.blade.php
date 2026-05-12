@@ -3,18 +3,15 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/png" href="{{ asset('images/logo-digilap.png') }}">
     <title>Tentang - DIGILAP MBG</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="min-h-screen bg-bg text-ink antialiased">
     <header class="bg-white border-b border-bordered">
         <div class="max-w-5xl mx-auto px-4 sm:px-8 py-4 flex items-center justify-between">
-            <a href="/" class="flex items-center gap-2">
-                <div class="w-9 h-9 rounded-xl bg-primary flex items-center justify-center text-white font-bold">D</div>
-                <div>
-                    <div class="font-bold text-ink leading-none">DIGILAP</div>
-                    <div class="text-[11px] text-muted leading-none mt-0.5">MBG Monitoring</div>
-                </div>
+            <a href="/" class="flex items-center">
+                <img src="{{ asset('images/logo-digilap.png') }}" alt="DIGILAP MBG" class="h-12 w-auto">
             </a>
             @auth
                 <a href="/" class="text-sm text-primary hover:underline">Kembali ke Dashboard &rarr;</a>
@@ -26,8 +23,7 @@
 
     <main class="max-w-5xl mx-auto px-4 sm:px-8 py-10">
         <section class="text-center mb-12">
-            <div class="w-20 h-20 mx-auto rounded-2xl bg-primary flex items-center justify-center text-white text-4xl font-bold mb-4 shadow-sm">D</div>
-            <h1 class="text-3xl sm:text-4xl font-bold text-ink">DIGILAP MBG</h1>
+            <img src="{{ asset('images/logo-digilap.png') }}" alt="DIGILAP MBG" class="h-32 w-auto mx-auto mb-4">
             <p class="text-base text-muted mt-2 max-w-2xl mx-auto">
                 Digitalisasi Laporan Makan Bergizi Gratis &mdash; sistem pelaporan digital untuk
                 mendukung pengawasan Program MBG secara transparan dan akuntabel.
@@ -97,9 +93,9 @@
             <h2 class="text-lg font-semibold text-ink mb-3">Sampel &amp; Periode Penelitian</h2>
             <div class="grid sm:grid-cols-3 gap-4 mb-4">
                 @foreach ([
-                    ['sppg' => 'SPPG Kalirejo', 'sekolah' => 'SMANBA'],
-                    ['sppg' => 'SPPG Rembang',  'sekolah' => 'NESABA'],
-                    ['sppg' => 'SPPG Bangil',   'sekolah' => 'MANSAPAS'],
+                    ['sppg' => 'SPPG Kalianyar',   'sekolah' => 'SMANBA'],
+                    ['sppg' => 'SPPG Gempeng',     'sekolah' => 'NESABA'],
+                    ['sppg' => 'SPPG Gajahbendo',  'sekolah' => 'MANSAPAS'],
                 ] as $s)
                     <div class="card-white">
                         <div class="text-[11px] uppercase tracking-wide text-muted">Penyedia</div>

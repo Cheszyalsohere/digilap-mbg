@@ -43,11 +43,11 @@
 
                 @php
                     $slots = [
-                        'slot_1' => ['Nasi', 'Contoh: Nasi putih 200gr'],
-                        'slot_2' => ['Buah', 'Contoh: Pisang ambon 1 buah'],
-                        'slot_3' => ['Protein Nabati', 'Contoh: Tempe goreng 2 potong'],
-                        'slot_4' => ['Protein Hewani', 'Contoh: Ayam goreng 1 potong'],
-                        'slot_5' => ['Susu', 'Contoh: Susu UHT 200ml'],
+                        'slot_1' => ['Slot 1', 'Isi menu slot 1...'],
+                        'slot_2' => ['Slot 2', 'Isi menu slot 2...'],
+                        'slot_3' => ['Slot 3', 'Isi menu slot 3...'],
+                        'slot_4' => ['Slot 4', 'Isi menu slot 4...'],
+                        'slot_5' => ['Slot 5', 'Isi menu slot 5...'],
                     ];
                 @endphp
                 @foreach ($slots as $name => [$label, $placeholder])
@@ -106,11 +106,11 @@
                     @php
                         $altOn = old('has_alternatif', $menu->has_alternatif);
                         $altSlots = [
-                            'alt_slot_1' => ['Alt Karbohidrat (Nasi)', 'slot_1'],
-                            'alt_slot_2' => ['Alt Buah', 'slot_2'],
-                            'alt_slot_3' => ['Alt Protein Nabati', 'slot_3'],
-                            'alt_slot_4' => ['Alt Protein Hewani', 'slot_4'],
-                            'alt_slot_5' => ['Alt Minuman (Susu)', 'slot_5'],
+                            'alt_slot_1' => ['Alt Slot 1', 'slot_1'],
+                            'alt_slot_2' => ['Alt Slot 2', 'slot_2'],
+                            'alt_slot_3' => ['Alt Slot 3', 'slot_3'],
+                            'alt_slot_4' => ['Alt Slot 4', 'slot_4'],
+                            'alt_slot_5' => ['Alt Slot 5', 'slot_5'],
                         ];
                     @endphp
                     <div id="alt_section" class="{{ $altOn ? '' : 'hidden' }} mt-4 p-4 rounded-xl bg-primary-light dark:bg-[#1A2E23] border-l-4 border-primary space-y-3">

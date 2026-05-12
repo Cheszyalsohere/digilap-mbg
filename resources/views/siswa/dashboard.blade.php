@@ -18,14 +18,15 @@
                 <span class="badge-info">{{ auth()->user()->sppg?->name ?? '-' }}</span>
             </div>
             @if ($menuToday)
-                <ul class="space-y-2 text-sm">
-                    @foreach ($menuToday->slots() as $label => $isi)
-                        <li class="flex justify-between gap-3">
-                            <span class="text-muted">{{ $label }}</span>
-                            <span class="font-medium text-right">{{ $isi }}</span>
-                        </li>
+                <div class="grid grid-cols-2 gap-2">
+                    @foreach ($menuToday->slots() as $isi)
+                        @if ($isi)
+                            <div class="bg-primary-light rounded-xl px-3 py-2 text-xs font-medium text-center border border-primary text-primary-dark dark:bg-[#1A2E23] dark:border-[#2A332C] dark:text-[#6BA882]">
+                                {{ $isi }}
+                            </div>
+                        @endif
                     @endforeach
-                </ul>
+                </div>
             @else
                 <p class="text-sm text-muted py-4">Menu belum tersedia hari ini.</p>
             @endif

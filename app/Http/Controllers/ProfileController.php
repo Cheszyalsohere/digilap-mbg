@@ -15,8 +15,12 @@ class ProfileController extends Controller
         $user = $request->user();
         $allergies = $user->isSiswa() ? Allergy::orderBy('id')->get() : collect();
         $userAllergyIds = $user->isSiswa() ? $user->allergies()->pluck('allergies.id')->toArray() : [];
-        $userAllergyLainnya = $user->isSiswa()
-            ? optional($user->allergies()->where('slug', 'lainnya')->first())->pivot->catatan
+
+        $allergyLainnya = $user->isSiswa()
+            ? $user->allergies()->where('slug', 'lainnya')->first()
+            : null;
+        $userAllergyLainnya = $allergyLainnya
+            ? optional($allergyLainnya->pivot)->catatan
             : null;
 
         return view('profile.edit', compact('user', 'allergies', 'userAllergyIds', 'userAllergyLainnya'));
